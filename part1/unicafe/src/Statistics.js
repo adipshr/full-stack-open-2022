@@ -1,6 +1,9 @@
 import React from "react";
 
-export default function Statistics({stats}) {
+export default function Statistics({ stats }) {
+  if (stats.totalRating === 0) {
+    return <p>No Feedback Given</p>;
+  }
   return (
     <div>
       <p>Good : {stats.goodRating}</p>

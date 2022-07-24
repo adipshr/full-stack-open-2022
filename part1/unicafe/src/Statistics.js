@@ -1,4 +1,5 @@
 import React from "react";
+import StatisticLine from "./StatisticLine";
 
 export default function Statistics({ stats }) {
   if (stats.totalRating === 0) {
@@ -6,12 +7,12 @@ export default function Statistics({ stats }) {
   }
   return (
     <div>
-      <p>Good : {stats.goodRating}</p>
-      <p>Neutral : {stats.neutralRating}</p>
-      <p>Bad : {stats.badRating}</p>
-      <p>All : {stats.totalRating}</p>
-      <p>Average : {stats.averageRating}</p>
-      <p>Percentage : {stats.positivePer}%</p>
+      <StatisticLine text={"Good"} value={stats.goodRating} />
+      <StatisticLine text={"Neutral"} value={stats.neutralRating} />
+      <StatisticLine text={"Bad"} value={stats.badRating} />
+      <StatisticLine text={"All"} value={stats.totalRating} />
+      <StatisticLine text={"Average"} value={stats.averageRating} />
+      <StatisticLine text={"Percentage"} value={`${stats.positivePer} %`} />
     </div>
   );
 }

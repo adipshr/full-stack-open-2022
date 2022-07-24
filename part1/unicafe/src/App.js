@@ -17,13 +17,13 @@ const App = () => {
   let positive = (good / total) * 100;
 
   let stats = {
-    goodRating : good,
-    badRating : bad,
-    neutralRating : neutral,
-    totalRating : total,
-    averageRating : average,
-    positivePer : positive
-  }
+    goodRating: good,
+    badRating: bad,
+    neutralRating: neutral,
+    totalRating: total,
+    averageRating: average,
+    positivePer: positive,
+  };
 
   return (
     <div>
@@ -34,7 +34,7 @@ const App = () => {
       <Button handelClick={handelBad} text={"Bad"} />
       <br />
       <h1>Statistics</h1>
-      <Statistics stats = {stats}></Statistics>
+      <Statistics stats={stats} />
     </div>
   );
 };

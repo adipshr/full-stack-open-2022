@@ -3,9 +3,7 @@ import React from "react";
 export default function Course(props) {
   const { course } = props;
 
-  function totalExercise(sum, curr) {
-    return sum + curr.exercises;
-  }
+  const totalExercise = (sum, curr) => sum + curr.exercises;
 
   let sum = course.parts.reduce(totalExercise, 0);
 

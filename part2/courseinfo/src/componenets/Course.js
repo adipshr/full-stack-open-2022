@@ -2,8 +2,12 @@ import React from "react";
 
 export default function Course(props) {
   const { course } = props;
-  let sum = 0;
-  course.parts.map((part) => (sum += part.exercises));  
+
+  function totalExercise(sum, curr) {
+    return sum + curr.exercises;
+  }
+
+  let sum = course.parts.reduce(totalExercise, 0);
 
   return (
     <div>

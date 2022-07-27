@@ -1,5 +1,6 @@
 import React from "react";
 
+// Course Component
 export default function Course(props) {
   const { course } = props;
 

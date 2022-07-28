@@ -9,6 +9,11 @@ const App = () => {
     let newPerson = {
       name: newName,
     };
+    if (persons.some((p, i) => p.name === newPerson.name)) {
+      alert(`${newPerson.name} is already added to phonebook`);
+      setNewName("");
+      return;
+    }
     setPersons(persons.concat(newPerson));
     setNewName("");
   };
@@ -29,8 +34,8 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((p) => (
-        <p key={persons.length + 1}>{p.name}</p>
+      {persons.map((p, i) => (
+        <p key={i}>{p.name}</p>
       ))}
     </div>
   );

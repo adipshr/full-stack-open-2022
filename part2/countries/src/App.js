@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import CountryList from "./CountryList";
+
 function App() {
   const [countriesData, setCountriesData] = useState([]);
-  const [filtredCountries, setFiltredCoutries] = useState([]);
+  const [filteredCountries, setFilteredCoutries] = useState([]);
 
   useEffect(() => {
     axios
@@ -15,43 +17,15 @@ function App() {
     const searchedCountries = countriesData.filter((c) =>
       c.name.common.toLowerCase().startsWith(toSearch.toLowerCase())
     );
-    setFiltredCoutries(searchedCountries);
+    setFilteredCoutries(searchedCountries);
   };
 
-  if (filtredCountries.length === 1) {
-    return (
-      <>
-        {console.log("", filtredCountries)}
-        Find countries : <input onChange={filterCountries} />
-        {filtredCountries.map((c) => (
-          <>
-            <h1>{c.name.common}</h1>
-            <p>Capital : {c.capital}</p>
-            <p>Area : {c.area}</p>
-            <h2>Languages : </h2>
-            <ul>
-              {Object.values(c.languages).map((lang) => (
-                <li>{lang}</li>
-              ))}
-            </ul>
-            <img src={c.flags.png} alt="" />
-          </>
-        ))}
-      </>
-    );
-  } else
-    return (
-      <>
-        Find countries : <input onChange={filterCountries} />
-        {filtredCountries.length <= 10 ? (
-          filtredCountries.map((c) => (
-            <p key={c.name.common}>{c.name.common}</p>
-          ))
-        ) : (
-          <p>Too many matches, specify another filter</p>
-        )}
-      </>
-    );
+  return (
+    <>
+      Find countries : <input onChange={filterCountries} />
+      <CountryList filteredCountries={filteredCountries} />
+    </>
+  );
 }
 
 export default App;

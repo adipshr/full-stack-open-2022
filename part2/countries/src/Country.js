@@ -10,7 +10,11 @@ export default function Country({ filteredCountries }) {
     <li>
       <p>{filteredCountries.name.common}</p>
       <button onClick={() => setShow(!show)}>{show ? "hide" : "show"}</button>
-      {show && <DisplayCountry country={filteredCountries} />}
+      {show && (
+        <DisplayCountry
+          country={filteredCountries}
+        />
+      )}
     </li>
   );
 }

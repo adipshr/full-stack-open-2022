@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
@@ -55,6 +56,15 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
+  const handleDelete = (id) => {
+    const personName = persons.find((p) => p.id === id).name;
+    if (window.confirm(`Delete ${personName} ?`)) {
+      personService.remove(id);
+      setPersons(persons.filter((p) => p.id !== id));
+      setFiltredNames(persons.filter((p) => p.id !== id));
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -67,7 +77,7 @@ const App = () => {
         addNumber={addNumber}
       />
       <h2>Numbers</h2>
-      <Persons filtredNames={filtredNames} />
+      <Persons filtredNames={filtredNames} handleDelete={handleDelete} />
     </div>
   );
 };

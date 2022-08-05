@@ -38,10 +38,13 @@ const App = () => {
       return;
     }
 
-    setPersons(persons.concat(newPerson));
+    axios.post("http://localhost:3001/persons/", newPerson).then((res) => {
+      setPersons(persons.concat(res.data));
+      setFiltredNames(persons.concat(res.data));
+    });
+
     setNewName("");
     setNewNumber("");
-    setFiltredNames(persons.concat(newPerson));
   };
 
   const addName = (event) => {

@@ -1,15 +1,17 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
 import personService from "./services/person";
+import Notification from "./Notification";
+import "./index.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filtredNames, setFiltredNames] = useState(persons);
+  const [errorMessage, seterrorMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -42,6 +44,10 @@ const App = () => {
         const person = persons.filter((p) => p.name === newPerson.name);
 
         personService.update(person[0].id, newPerson).then((returnedPerson) => {
+          seterrorMessage(`Phone number for ${returnedPerson.name} updated`);
+          setTimeout(() => {
+            seterrorMessage(null);
+          }, 5000);
           setPersons(
             persons.map((p) =>
               p.id !== returnedPerson.id ? p : returnedPerson
@@ -59,6 +65,10 @@ const App = () => {
     }
 
     personService.create(newPerson).then((returnedPerson) => {
+      seterrorMessage(`${returnedPerson.name} Added`);
+      setTimeout(() => {
+        seterrorMessage(null);
+      }, 5000);
       setPersons(persons.concat(returnedPerson));
       setFiltredNames(persons.concat(returnedPerson));
     });
@@ -86,7 +96,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <Filter text={"filter shown with"} filterName={filterName} />
+      <h2>Add a new contact</h2>
       <PersonForm
         addPerson={addPerson}
         newName={newName}

@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-const persons = [
+let persons = [
   {
     id: 1,
     name: "Arto Hellas",
@@ -23,6 +23,11 @@ const persons = [
     name: "Mary Poppendieck",
     number: "39-23-6423122",
   },
+  {
+    id: 5,
+    name: "Test",
+    number: "123"
+  }
 ];
 
 app.get("/", (req, res) => res.send("Hello World!"));
@@ -43,5 +48,12 @@ app.get("/api/persons/:id", (req, res) => {
     res.status(404).end();
   }
 });
+
+app.delete("/api/persons/:id", (req,res) => {
+  const id = Number(req.params.id);
+  persons = persons.filter( p => p.id != id)
+  res.status(204).end()
+})
+
 
 app.listen(port, () => console.log(`Server running on port ${port}!`));

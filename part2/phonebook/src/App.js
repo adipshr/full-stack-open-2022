@@ -11,7 +11,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filtredNames, setFiltredNames] = useState(persons);
-  const [errorMessage, seterrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -44,9 +45,9 @@ const App = () => {
         const person = persons.filter((p) => p.name === newPerson.name);
 
         personService.update(person[0].id, newPerson).then((returnedPerson) => {
-          seterrorMessage(`Phone number for ${returnedPerson.name} updated`);
+          setSuccessMessage(`Phone number for ${returnedPerson.name} updated`);
           setTimeout(() => {
-            seterrorMessage(null);
+            setSuccessMessage(null);
           }, 5000);
           setPersons(
             persons.map((p) =>
@@ -65,9 +66,9 @@ const App = () => {
     }
 
     personService.create(newPerson).then((returnedPerson) => {
-      seterrorMessage(`${returnedPerson.name} Added`);
+      setSuccessMessage(`${returnedPerson.name} Added`);
       setTimeout(() => {
-        seterrorMessage(null);
+        setSuccessMessage(null);
       }, 5000);
       setPersons(persons.concat(returnedPerson));
       setFiltredNames(persons.concat(returnedPerson));
@@ -87,7 +88,17 @@ const App = () => {
   const handleDelete = (id) => {
     const personName = persons.find((p) => p.id === id).name;
     if (window.confirm(`Delete ${personName} ?`)) {
-      personService.remove(id);
+      personService.remove(id).catch((error) => {
+        console.log("Error occured", error);
+        setErrorMessage(
+          `Information of ${personName} has already been removed from the server `
+        );
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+        setPersons(persons.filter((p) => p.id !== id));
+        setFiltredNames(persons.filter((p) => p.id !== id));
+      });
       setPersons(persons.filter((p) => p.id !== id));
       setFiltredNames(persons.filter((p) => p.id !== id));
     }
@@ -96,7 +107,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
+      <Notification
+        errorMessage={errorMessage}
+        successMessage={successMessage}
+      />
       <Filter text={"filter shown with"} filterName={filterName} />
       <h2>Add a new contact</h2>
       <PersonForm

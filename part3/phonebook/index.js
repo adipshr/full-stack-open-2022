@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+app.use(express.json())
+
+
 let persons = [
   {
     id: 1,
@@ -55,5 +58,19 @@ app.delete("/api/persons/:id", (req,res) => {
   res.status(204).end()
 })
 
+app.post("/api/persons",(req,res) =>  
+{
+  const body = req.body
+  console.log('Name',req.body.name);
+
+  const person = {
+    id : Math.floor(Math.random() * 500),
+    name : body.name,
+    number : body.number
+  }
+
+  persons = persons.concat(person)
+  res.send(person)
+})
 
 app.listen(port, () => console.log(`Server running on port ${port}!`));

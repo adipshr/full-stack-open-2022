@@ -27,10 +27,21 @@ const persons = [
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
-app.get("/api/persons", (req, res) => res.json(persons));
-
 app.get("/info", (req, res) =>
   res.send(`<p>Phonebook has info for ${persons.length}people</p><br>${Date()}`)
 );
+
+app.get("/api/persons", (req, res) => res.json(persons));
+
+app.get("/api/persons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const person = persons.find((p) => p.id === id);
+
+  if (person) {
+    res.send(person);
+  } else {
+    res.status(404).end();
+  }
+});
 
 app.listen(port, () => console.log(`Server running on port ${port}!`));

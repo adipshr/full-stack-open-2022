@@ -2,8 +2,7 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-app.use(express.json())
-
+app.use(express.json());
 
 let persons = [
   {
@@ -29,8 +28,8 @@ let persons = [
   {
     id: 5,
     name: "Test",
-    number: "123"
-  }
+    number: "123",
+  },
 ];
 
 app.get("/", (req, res) => res.send("Hello World!"));
@@ -52,25 +51,33 @@ app.get("/api/persons/:id", (req, res) => {
   }
 });
 
-app.delete("/api/persons/:id", (req,res) => {
+app.delete("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
-  persons = persons.filter( p => p.id != id)
-  res.status(204).end()
-})
+  persons = persons.filter((p) => p.id != id);
+  res.status(204).end();
+});
 
-app.post("/api/persons",(req,res) =>  
-{
-  const body = req.body
-  console.log('Name',req.body.name);
+app.post("/api/persons", (req, res) => {
+  const body = req.body;
 
   const person = {
-    id : Math.floor(Math.random() * 500),
-    name : body.name,
-    number : body.number
+    id: Math.floor(Math.random() * 500),
+    name: body.name,
+    number: body.number,
+  };
+
+  if (!body.name || !body.number) {
+    return res.status(400).json({
+      error: "content missing",
+    });
   }
 
-  persons = persons.concat(person)
-  res.send(person)
-})
+  if (persons.find((p) => p.name === person.name)) {
+    return res.status(404).send({ error: "Name must be unique" });
+  }
+
+  persons = persons.concat(person);
+  res.send(person);
+});
 
 app.listen(port, () => console.log(`Server running on port ${port}!`));
